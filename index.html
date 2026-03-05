@@ -4,118 +4,482 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KAUST Bioinformatics Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --blue-dark:  #003f88;
+            --blue:       #005fcc;
+            --blue-light: #e8f0fb;
+            --teal:       #00879a;
+            --teal-light: #e0f5f7;
+            --gold:       #c8972f;
+            --gold-light: #fdf4e0;
+            --text:       #1a1a2e;
+            --text-muted: #5a6072;
+            --bg:         #f6f8fc;
+            --white:      #ffffff;
+            --border:     #dde3ef;
+            --radius:     12px;
+            --shadow:     0 4px 24px rgba(0,0,0,0.07);
+        }
+
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
         }
-        header {
-            background-color: #0056b3;
-            color: #fff;
-            padding: 1em 0;
-            text-align: center;
-        }
+
+        /* ── NAV ── */
         nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--blue-dark);
             display: flex;
-            justify-content: center;
-            background-color: #004494;
-            padding: 0.5em 0;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2.5rem;
+            height: 60px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.18);
         }
-        nav a {
+        .nav-brand {
+            font-weight: 700;
+            font-size: 1rem;
             color: #fff;
-            text-decoration: none;
-            padding: 0.5em 1em;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
         }
+        .nav-brand span { color: var(--gold); }
+        .nav-links { display: flex; gap: 0.25rem; }
+        .nav-links a {
+            color: rgba(255,255,255,0.82);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            padding: 0.45em 1em;
+            border-radius: 6px;
+            transition: background 0.18s, color 0.18s;
+        }
+        .nav-links a:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+        /* ── HERO ── */
         .hero {
-            background: url('https://www.kaust.edu.sa/sites/default/files/styles/banner_image_large/public/2020-03/KAUST_Coral_Reef_Ecology.jpg?itok=y_Y_Y_Y') no-repeat center center/cover;
+            background: linear-gradient(135deg, #002b60 100%, #005fcc 100%, #00879a 100%);
             color: #fff;
             text-align: center;
-            padding: 4em 0;
+            padding: 7rem 2rem 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .hero-content { position: relative; max-width: 760px; margin: 0 auto; }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            padding: 0.35em 1.1em;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            margin-bottom: 1.5rem;
         }
         .hero h1 {
-            font-size: 3em;
-            margin-bottom: 0.5em;
+            font-family: 'Merriweather', serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: 1.25rem;
         }
         .hero p {
-            font-size: 1.2em;
-            margin-bottom: 1.5em;
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.85);
+            max-width: 560px;
+            margin: 0 auto 2.5rem;
         }
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-            padding: 2em 0;
-        }
-        .section {
-            background-color: #fff;
-            padding: 2em;
-            margin-bottom: 1em;
+        .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn {
+            display: inline-block;
+            padding: 0.8em 2em;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            font-size: 0.92rem;
+            text-decoration: none;
+            transition: transform 0.15s, box-shadow 0.15s;
         }
-        footer {
-            background-color: #333;
-            color: #fff;
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.18); }
+        .btn-gold { background: var(--gold); color: #fff; }
+        .btn-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.6); }
+
+        /* ── STATS BAR ── */
+        .stats-bar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0;
+        }
+        .stat-item {
             text-align: center;
-            padding: 1em 0;
-            position: relative;
-            bottom: 0;
-            width: 100%;
+            padding: 1.8rem 3rem;
+            border-right: 1px solid var(--border);
+        }
+        .stat-item:last-child { border-right: none; }
+        .stat-num {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--blue);
+            line-height: 1;
+        }
+        .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem; font-weight: 500; }
+
+        /* ── CONTAINER ── */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+        .section-block { padding: 5rem 0; }
+        .section-block + .section-block { border-top: 1px solid var(--border); }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 0.6rem;
+        }
+        .section-title {
+            font-family: 'Merriweather', serif;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+        .section-intro { color: var(--text-muted); max-width: 640px; font-size: 1rem; }
+
+        /* ── ABOUT ── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .about-visual {
+            background: linear-gradient(135deg, var(--blue-light) 0%, var(--teal-light) 100%);
+            border-radius: var(--radius);
+            padding: 3rem 2rem;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        .about-visual .icon-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin-top: 1rem;
+        }
+        .icon-tile {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 1.2rem 0.75rem;
+            font-size: 1.8rem;
+            box-shadow: var(--shadow);
+        }
+        .icon-tile-label { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); margin-top: 0.4rem; }
+
+        /* ── SERVICE CARDS ── */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
+            margin-top: 2.5rem;
+        }
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.75rem 1.5rem;
+            transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+        }
+        .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--blue); }
+        .card-icon { font-size: 2rem; margin-bottom: 0.9rem; }
+        .card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
+        .card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+
+        /* ── TRAINING ── */
+        .training-bg { background: var(--white); }
+        .training-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 2.5rem; }
+        .training-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.25rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.4rem 1.75rem;
+            transition: border-color 0.18s, box-shadow 0.18s;
+        }
+        .training-item:hover { border-color: var(--teal); box-shadow: 0 2px 12px rgba(0,135,154,0.1); }
+        .training-index {
+            flex-shrink: 0;
+            width: 2.2rem;
+            height: 2.2rem;
+            border-radius: 50%;
+            background: var(--teal);
+            color: #fff;
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0.1rem;
+        }
+        .training-content { flex: 1; }
+        .training-content h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
+        .training-content a {
+            font-size: 0.82rem;
+            color: var(--blue);
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .training-content a:hover { text-decoration: underline; }
+        .tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2em 0.65em;
+            border-radius: 4px;
+            margin-bottom: 0.4rem;
+        }
+        .tag-blue { background: var(--blue-light); color: var(--blue); }
+        .tag-teal { background: var(--teal-light); color: var(--teal); }
+        .tag-gold { background: var(--gold-light); color: var(--gold); }
+        .tag-gray { background: #eee; color: #666; }
+
+        /* ── CONTACT ── */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
+        .contact-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+        }
+        .contact-card h3 { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.8rem; }
+        .contact-card a { color: var(--blue); font-weight: 600; text-decoration: none; font-size: 1rem; }
+        .contact-card a:hover { text-decoration: underline; }
+        .contact-card p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.7; }
+        .contact-icon { font-size: 1.6rem; margin-bottom: 0.75rem; }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--text);
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.85rem;
+        }
+        footer strong { color: rgba(255,255,255,0.9); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 720px) {
+            .about-grid, .contact-grid { grid-template-columns: 1fr; }
+            .about-visual { display: none; }
+            .stat-item { padding: 1.4rem 1.5rem; border-right: none; border-bottom: 1px solid var(--border); }
+            .stat-item:last-child { border-bottom: none; }
+            nav { padding: 0 1.25rem; }
+            .nav-brand { font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>KAUST Bioinformatics Platform</h1>
-    </header>
-    <nav>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-brand">KAUST <span>Bioinformatics</span> Platform</div>
+    <div class="nav-links">
         <a href="#about">About</a>
         <a href="#services">Services</a>
-        <a href="#services">Training</a>
+        <a href="#training">Training</a>
         <a href="#contact">Contact</a>
-    </nav>
-    <section class="hero">
-        <h1>Advancing Biological Discovery</h1>
-        <p>Cutting-edge bioinformatics solutions supporting research projects at KAUST.</p>
-        <a href="#services" style="background-color: #f0ad4e; color: #fff; padding: 1em 2em; text-decoration: none; border-radius: 5px;">Explore Our Services</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">King Abdullah University of Science &amp; Technology</div>
+        <h1>Biological Discovery Through Computation</h1>
+        <p>State-of-the-art bioinformatics resources, expertise, and training to accelerate research at KAUST and beyond.</p>
+        <div class="hero-actions">
+            <a href="#services" class="btn btn-gold">Explore Our Services</a>
+            <a href="#training" class="btn btn-outline">View Training Programs</a>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- ABOUT -->
+<div class="container">
+    <section id="about" class="section-block">
+        <div class="about-grid">
+            <div>
+                <div class="section-label">Who We Are</div>
+                <h2 class="section-title">A Hub for Computational Biology at KAUST</h2>
+                <p class="section-intro" style="margin-bottom:1rem">
+                    The KAUST Bioinformatics Platform provides state-of-the-art computational resources and expertise to support research in genomics, transcriptomics, metagenomics, and other data-intensive biological fields.
+                </p>
+                <p style="color:var(--text-muted);font-size:1rem">
+                    We are dedicated to accelerating scientific discovery through innovative data analysis, reproducible workflows, and intensive training programs for researchers and students across the university and beyond.
+                </p>
+            </div>
+            <div class="about-visual">
+                <div style="font-size:0.8rem;font-weight:700;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.5rem">Our Focus Areas</div>
+                <div class="icon-grid">
+                    <div class="icon-tile">🧬<div class="icon-tile-label">Genomics Services & Data Analysis</div></div>
+                    <div class="icon-tile">📊<div class="icon-tile-label">Bioinformatics Workflows & Infrastructure</div></div>
+                    <div class="icon-tile">🦠<div class="icon-tile-label">Training Courses & Workshops</div></div>
+                    <div class="icon-tile">🤖<div class="icon-tile-label">AI &amp; ML</div></div>
+                </div>
+            </div>
+        </div>
     </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="section-block">
+        <div class="section-label">What We Offer</div>
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-intro">From raw data processing to custom pipeline development, we support every stage of your bioinformatics workflow.</p>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon">🧬</div>
+                <h3>Genomic Data Analysis</h3>
+                <p>Whole-genome, whole-exome, transcriptomics, single cell genomics, metagenomics data analysis using best-practice pipelines.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚙️</div>
+                <h3>Custom Bioinformatics Workflows</h3>
+                <p>Tailored pipeline development, automation, and system development for large-scale datasets.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎓</div>
+                <h3>Training &amp; Workshops</h3>
+                <p>Hands-on courses covering applied bioinformatics, transcriptomics, metagenomics, and genomic AI.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔬</div>
+                <h3>Bioscience Core Lab</h3>
+                <p>Computational and infrastructure support including development of pipelines and data management for the KAUST Bioscience Core Lab facilities.</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- TRAINING (alternate background) -->
+<div style="background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
     <div class="container">
-        <section id="about" class="section">
-            <h2>About Us</h2>
-            <p>The KAUST Bioinformatics Platform provides state-of-the-art computational resources and expertise to support research in genomics, and other bioinformatics-intensive fields. We are dedicated to accelerating scientific discovery through innovative data analysis and interpretation. We also provide intensive training workshops for researchers and students.</p>
-        </section>
-        <section id="services" class="section">
-            <h2>Our Services</h2>
-            <ul>
-                <li>Genomic Data Analysis</li>
-                <li>Transcriptomics and RNA-Seq</li>
-                <li>Custom Bioinformatics Workflows</li>
-                <li>Training and Workshops</li>
-                <li>Support Bioscience Core Lab</li>
-            </ul>
-        </section>
-        <section id="training" class="section">
-            <h2>Our Trainig Programs</h2>
-            <ul>
-                <li>KAUST Academy Bioinformatics Specialization Program - Stage 3 -2026</li>
-                <li>Introduction to Applied Bioinformatics - TBD</li>
-                <li>Genomic Foundation Models</li>
-                <li>RNA-seq Comprehensive Course</li>
-                <li>Metagenomics Comprehensive Course</li>
-            </ul>
-        </section>
-        <section id="contact" class="section">
-            <h2>Contact Us</h2>
-            <p>For inquiries and collaborations, please reach out to us at: <a href="mailto:bioinformatics@kaust.edu.sa">bioinformatics@kaust.edu.sa</a></p>
-            <p>King Abdullah University of Science and Technology (KAUST)<br>
-            Thuwal, Kingdom of Saudi Arabia</p>
+        <section id="training" class="section-block">
+            <div class="section-label">Education</div>
+            <h2 class="section-title">Training Programs</h2>
+            <p class="section-intro">Structured courses and workshops to build bioinformatics competency.</p>
+            <div class="training-list">
+
+                <div class="training-item">
+                    <div class="training-index">1</div>
+                    <div class="training-content">
+                        <div><span class="tag tag-blue">Foundational</span></div>
+                        <h3>Introduction to Applied Bioinformatics</h3>
+                        <a href="https://bioinfo-kaust.github.io/introduction-to-bioinformatics/index.html" target="_blank" rel="noopener">Visit course webpage &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="training-item">
+                    <div class="training-index">2</div>
+                    <div class="training-content">
+                        <div><span class="tag tag-gold">2026 Cohort</span></div>
+                        <h3>KAUST Academy Bioinformatics Specialization Program &mdash; Stage 3</h3>
+                        <a href="https://bioinfo-kaust.github.io/academy-stage3-2026/index.html" target="_blank" rel="noopener">Visit course webpage &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="training-item">
+                    <div class="training-index">3</div>
+                    <div class="training-content">
+                        <div><span class="tag tag-teal">AI &amp; ML</span></div>
+                        <h3>Genomic Foundation Models Workshop</h3>
+                        <a href="https://bioinfo-kaust.github.io/gfm-workshop/index.html" target="_blank" rel="noopener">Visit course webpage &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="training-item">
+                    <div class="training-index">4</div>
+                    <div class="training-content">
+                        <div><span class="tag tag-blue">Transcriptomics</span></div>
+                        <h3>RNA-seq Comprehensive Course</h3>
+                        <a href="https://bioinfo-kaust.github.io/rnaseq-course/index.html" target="_blank" rel="noopener">Visit course webpage &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="training-item">
+                    <div class="training-index">5</div>
+                    <div class="training-content">
+                        <div><span class="tag tag-gray">Coming Soon</span></div>
+                        <h3>Metagenomics Comprehensive Course</h3>
+                        <span style="font-size:0.82rem;color:var(--text-muted)">Course page coming soon</span>
+                    </div>
+                </div>
+
+            </div>
         </section>
     </div>
-    <footer>
-        <p>&copy; 2026 KAUST Bioinformatics Platform</p>
-    </footer>
+</div>
+
+<!-- CONTACT -->
+<div class="container">
+    <section id="contact" class="section-block">
+        <div class="section-label">Get In Touch</div>
+        <h2 class="section-title">Contact Us</h2>
+        <p class="section-intro">Interested in collaboration, a consultation, or joining one of our training programs? We'd love to hear from you.</p>
+        <div class="contact-grid">
+            <div class="contact-card">
+                <div class="contact-icon">✉️</div>
+                <h3>Email</h3>
+                <a href="mailto:bioinformatics@kaust.edu.sa">bioinformatics@kaust.edu.sa</a>
+                <p style="margin-top:0.5rem">For research inquiries, collaborations, and service requests.</p>
+                <p style="margin-top:0.5rem"><a href='https://www.kaust.edu.sa/en/research/research-platforms/bioinformatics-platform'>Official platform website →</a></p>
+                
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon">📍</div>
+                <h3>Location</h3>
+                <p><strong style="color:var(--text)">King Abdullah University of Science and Technology</strong><br>
+                    Building 2, Ground floor, East side<br>
+                    Thuwal 23955-6900<br>
+                Kingdom of Saudi Arabia</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <p>&copy; 2026 <strong>KAUST Bioinformatics Platform</strong> &mdash; King Abdullah University of Science and Technology</p>
+</footer>
+
 </body>
 </html>
